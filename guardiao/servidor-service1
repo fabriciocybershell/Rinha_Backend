@@ -1,0 +1,13 @@
+service servidor-service1
+{
+        type = UNLISTED
+        port = 9999
+        socket_type = stream
+        protocol = tcp
+        wait = no
+        user = nobody
+        server = /app/backend.sh
+        #instances = 1
+        #flags = REUSE IPv4
+        #server_args = -e .....
+}
