@@ -1,8 +1,6 @@
 version: '3.8'
 services:
   load-balancer:
-  # xinetd_service:
-    # image: nginx:latest
     build: .
     ports:
       - "9999:9999"
