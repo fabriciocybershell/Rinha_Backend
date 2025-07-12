@@ -51,7 +51,7 @@ valid=0
 		uuid="$(uuidgen)"
 		# adicionar formatador de valores printf:
 		dados="{"correlationId":"${uuid}","amount": 19.90}"
-		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n"
+		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		exit 1
 	}
 }
@@ -65,7 +65,7 @@ valid=0
 		# adicionar formatador de valores printf:
 
 		dados="{"correlationId":"${uuid}","amount": 19.90}"
-		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n"
+		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		exit 1
 	}
 }
