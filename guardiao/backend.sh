@@ -27,13 +27,13 @@ done <&0
 
 # requisição completa de solicitação de um arquivo:
 # GET /css/styles.css HTTP/1.1 # exemplo de teste de requisição.
-[[ "${BODY_REQUEST[*]}" =~ (GET|POST).(\/[^\ ]*).HTTPS?\/([0-9]{1,2}\.[0-9]{1,2}) ]] && {
+[[ "${BODY_REQUEST[*]}" =~ (GET|POST).(\/[^\ ]*).HTTPS?\/([0-9]{1,2}\.[0-9]{1,2}) ]] #&& {
 	# obtendo partes do cabeçalho atravéz dos retrovisores:
-	HEAD['METHOD']="${BASH_REMATCH[1]}"
-	HEAD['PATH']="${BASH_REMATCH[2]}"
-	HEAD['VERSION']="${BASH_REMATCH[3]}"
+	# HEAD['METHOD']="${BASH_REMATCH[1]}"
+	# HEAD['PATH']="${BASH_REMATCH[2]}"
+	# HEAD['VERSION']="${BASH_REMATCH[3]}"
 	# echo "METHOD: ${HEAD['METHOD']} | PATH: ${HEAD['PATH']} | VERSION: ${HEAD['VERSION']}" >> "${LOG}"
-}
+#}
 
 # enviando respósta de exemplo temporária para testes iniciais:
 
@@ -44,27 +44,31 @@ valid=0
 
 # diferenciar chamadas de API:
 # requisições POST:
-[[ "${HEAD['METHOD']}" = "POST" ]] && {
-	[[ "${HEAD['PATH']}" = "/payments" ]] && {
+	# HEAD['METHOD']="${BASH_REMATCH[1]}"
+	# HEAD['PATH']="${BASH_REMATCH[2]}"
+	# HEAD['VERSION']="${BASH_REMATCH[3]}"
+
+[[ "${BASH_REMATCH[1]}" = "POST" ]] && {
+	[[ "${BASH_REMATCH[2]}" = "/payments" ]] && {
 		valid=1
 		# criar uuid:
 		uuid="$(uuidgen)"
 		# adicionar formatador de valores printf:
-		dados="{"correlationId":"${uuid}","amount": 19.90}"
+		dados="{\"correlationId\":\"${uuid}\",\"amount\": 19.90}"
 		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		exit 1
 	}
 }
 
 # requisições GET:
-[[ "${HEAD['METHOD']}" = "GET" ]] && {
-	[[ "${HEAD['PATH']}" = "/payments" ]] && {
+[[ "${BASH_REMATCH[1]}" = "GET" ]] && {
+	[[ "${BASH_REMATCH[2]}" = "/payments" ]] && {
 		valid=1
 		# criar uuid:
 		uuid="$(uuidgen)"
 		# adicionar formatador de valores printf:
 
-		dados="{"correlationId":"${uuid}","amount": 19.90}"
+		dados="{\"correlationId\":\"${uuid}\",\"amount\": 19.90}"
 		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		exit 1
 	}
