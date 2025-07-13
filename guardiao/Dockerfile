@@ -1,16 +1,15 @@
-
 FROM ubuntu:latest
 
 WORKDIR /app
 
 COPY backend.sh .
 
-RUN apt-get update && apt-get install -y xinetd
+RUN apt-get update && apt-get install -y xinetd uuid-runtime curl
 
-COPY xinetd.conf /etc/xinetd.conf
+#COPY xinetd.conf /etc/xinetd.conf
 COPY servidor-service1 /etc/xinetd.d/servidor-service1
 
-RUN chmod +x /etc/xinetd.d/servidor-service1
+RUN chmod +x ./backend.sh
 
 EXPOSE 9999
 
