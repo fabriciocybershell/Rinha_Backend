@@ -55,8 +55,17 @@ valid=0
 		# melhor e mais confiável meio de registro:
 		# {
 		#   flock -x 3
-		#   printf "\n" >&3
-		# } 3>>"${LOG}"
+			# variavel local temporário, será decidido destino posteriormente:
+			# destino="default"
+			# ler dados de default/fallback:
+			# IFS=":" read requests amount <<< "$(< "${destino}.txt")"
+
+			# incrementar valor de requests:
+			# requests="$((${requests:-0}+1))"
+			# incrementar valor de default/fallback:
+			# amount="$(bc --matchlib <<< ${amount//\,/\.})"
+		#   printf "${requests}:${amount}" >&3
+		# } 3>>"${destino}.txt"
 
 		# emitir respósta padrão em caso se sucesso:
 		echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
@@ -70,8 +79,19 @@ valid=0
 		valid=1
 		# adicionar meios de pesquisa:
 
-		# emitir respósta padrão em caso se sucesso:
-		echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
+		# emitir respósta em caso se sucesso:
+		dados="{
+    "default" : {
+        "totalRequests": ${default_requests},
+        "totalAmount": ${default_amount}
+    },
+    "fallback" : {
+        "totalRequests": ${fallback_requests},
+        "totalAmount": ${default_amount}
+    }
+}"
+
+		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		exit 1
 	}
 }
