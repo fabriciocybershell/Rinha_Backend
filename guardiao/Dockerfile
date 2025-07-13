@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY backend.sh .
 
-RUN apt-get update && apt-get install -y xinetd uuid-runtime curl
+RUN apt-get update && apt-get install -y xinetd uuid-runtime curl sqlite3
 
 #COPY xinetd.conf /etc/xinetd.conf
 COPY servidor-service1 /etc/xinetd.d/servidor-service1

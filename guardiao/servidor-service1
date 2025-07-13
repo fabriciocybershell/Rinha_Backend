@@ -7,7 +7,41 @@ service servidor-service1
         user = nobody
         server = /app/backend.sh
         instances = 10
+        disable = no
         port = 9994
         per_source = UNLIMITED
         cps = 1000 0
 }
+
+# configuração para balanceamento:
+#service balancer1
+#{
+#        type = UNLISTED
+#        flags = REUSE
+#        socket_type = stream
+#        protocol = tcp
+#        wait = no
+#        user = nobody
+#        instances = 10
+#        disable = no
+#        port = 9994
+#        per_source = 500
+#        cps = 1000 0
+#        redurect = backend1:9994
+#}
+
+#service balancer2
+#{
+#        type = UNLISTED
+#        flags = REUSE
+#        socket_type = stream
+#        protocol = tcp
+#        wait = no
+#        user = nobody
+#        instances = 10
+#        disable = no
+#        port = 9994
+#        per_source = 500
+#        cps = 1000 0
+#        redurect = backend2:9994
+#}
