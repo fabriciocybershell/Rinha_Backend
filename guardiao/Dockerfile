@@ -2,15 +2,15 @@ FROM ubuntu:latest
 
 WORKDIR /app
 
-COPY backend.sh .
+#COPY backend.sh .
 
-RUN apt-get update && apt-get install -y xinetd uuid-runtime curl sqlite3
+#RUN apt-get update && apt-get install -y xinetd uuid-runtime curl sqlite3
 
 #COPY xinetd.conf /etc/xinetd.conf
-COPY servidor-service1 /etc/xinetd.d/servidor-service1
+#COPY servidor-service1 /etc/xinetd.d/servidor-service1
 
-RUN chmod +x ./backend.sh
+#RUN chmod +x ./backend.sh
 
-EXPOSE 9999
+#EXPOSE 9999
 
-CMD ["/usr/sbin/xinetd", "-dontfork"]
+#CMD ["/usr/sbin/xinetd", "-dontfork"]
