@@ -8,7 +8,7 @@ service servidor-service1
         server = /app/backend.sh
         instances = 10
         disable = no
-        port = 8081
+        port = 8080
         per_source = UNLIMITED
         cps = 1000 0
 }

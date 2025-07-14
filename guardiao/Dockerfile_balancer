@@ -4,5 +4,5 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y xinetd
 
-COPY xinetd.conf /etc/xinetd.conf
-COPY balanceador /etc/xinetd.d/balanceador
+COPY config/xinetd.conf /etc/xinetd.conf
+COPY config/balanceador /etc/xinetd.d/balanceador

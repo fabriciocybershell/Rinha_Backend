@@ -20,7 +20,7 @@ services:
         limits:
           # 30% do processamento para balanceador: 0.5
           cpus: "0.5"
-          memory: "70MB"
+          memory: "70MB" # ideal mas com excesso
 
 # APIS:
   backend1: &backend
@@ -35,7 +35,7 @@ services:
       - PAYMENT_PROCESSOR_URL_DEFAULT=http://payment-processor-default:8080
       - PAYMENT_PROCESSOR_URL_FALLBACK=http://payment-processor-fallback:8080
     ports:
-      - "8081:8081"
+      - "8080:8080"
     networks:
       - backend
       - payment-processor
@@ -46,7 +46,7 @@ services:
         limits:
 # 30% do processamento para balanceador: 0.5
           cpus: "0.5"
-          memory: "105MB"
+          memory: "105MB" # MUITO excesso
 
   backend2:
     <<: *backend
@@ -67,7 +67,7 @@ services:
         limits:
 # 30% do processamento para DB: 0.4
           cpus: "0.4"
-          memory: "105MB"
+          memory: "70MB" # excesso
 
 networks:
   backend:
@@ -78,7 +78,9 @@ networks:
 # recursos máximos:
 # cpus: "1.5"
 # memory: "350MB"
+# distribuição:
 # 20% do processamento para cada backend, backend1 e backend2: 0.3 + 0.3 = 0.6, restando 0.9
 # 30% do processamento para DB: 0.4
 # 30% do processamento para balanceador: 0.5
 # total: 0.3 + 0.3 + 0.4 + 0.5 = 1.5CPU
+# memória total distribuida: 105+105+70+70 = 350mb (foi na cagada)

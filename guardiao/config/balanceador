@@ -12,7 +12,7 @@ service balancer
         port = 9999
         per_source = 1000
         cps = 1000 0
-        redirect = backend1:8081
+        redirect = backend1:8080
 }
 
 service balancer
@@ -28,5 +28,5 @@ service balancer
         port = 9999
         per_source = 1000
         cps = 1000 0
-        redirect = backend2:8081
+        redirect = backend2:8080
 }
