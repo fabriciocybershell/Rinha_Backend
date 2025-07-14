@@ -6,7 +6,7 @@
 declare -A HEAD
 
 # local do log:
-LOG="/home/fabriciocybershell/sessão_desenvolvimento/rinha_backend/guardiao/backend.log"
+LOG="./guardiao/backend.log"
 
 # variáveis padrão:
 STATUS="200 - Ok"
