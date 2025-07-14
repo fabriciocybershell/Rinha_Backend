@@ -15,7 +15,7 @@ focando na disponibilidade do serviço pelo baixo consumo, permite garantir rece
 ```
 docker compose up
 ```
-OBS: ainda não deve funcionoar, estou montando e calculando/revendo a estrutura primeiro (baixa familiaridade com docker).
+OBS: ainda não deve funcionar, estou montando e calculando/revendo a estrutura primeiro (baixa familiaridade com docker).
 
 ## Informação adicional não relevante:
  Ainda é necessário a construção do código inteiro em si no momento em que escrevo este README.md, estou focando em montar a estrutura completa corretamente, pela minha baixa familiaridade com docker, os códigos produzidos até o breve momento foram códigos conceituais e experimentais para projetos pessoais que realizei, os resultados foram muito bons para tecnologias negligenciadas, me fazendo rever bastante sobre opiniões muito reproduzidas no mundo DEV de maneira geral.
