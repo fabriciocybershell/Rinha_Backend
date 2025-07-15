@@ -67,8 +67,14 @@ valid=0
 		#   printf "${requests}:${amount}" >&3
 		# } 3>>"${destino}.txt"
 
+# respósta para testar montagem interna dos containers:
+		dados="{
+    \"message\" : \"oláaaaaa UwU\"
+}"
+
+		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		# emitir respósta padrão em caso se sucesso:
-		echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
+		# echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
 		exit 1
 	}
 }

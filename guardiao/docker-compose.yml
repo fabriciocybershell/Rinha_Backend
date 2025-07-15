@@ -11,7 +11,7 @@ services:
       - backend1
       - backend2
     ports:
-      - "9999:9999"
+      - "9999:9994"
     networks:
       - backend
       - payment-processor
@@ -52,7 +52,8 @@ services:
     <<: *backend
     container_name: backend2
     hostname: backend2
-
+    ports:
+      - "8081:8080"
   database:
     container_name: database
     build: 
@@ -62,7 +63,7 @@ services:
     command: /usr/sbin/xinetd -dontfork
     hostname: database
     ports:
-      - "8080:8080"
+      - "8082:8080"
     deploy:
       resources:
         limits:
