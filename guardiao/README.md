@@ -3,7 +3,7 @@
 ## Tecnologias utilizadas:
 - **ShellScript** - Tempo de inicialização, menor dependências, merreca de memória e processamento.
 - **Xinetd** - Antigo e rápido pra época, servidores de alto desempenho, fácil configuração, merreca de memória, processamento variavel porém baixo.
-- **SQLite** - Velocidade, baixo consumo, merreca de memória e processamento.
+- **MariaDB** - Simplicidade.
 
 ## Estratégia:
 focando na disponibilidade do serviço pelo baixo consumo, permite garantir recebimento dos dados de maneira mais ágil.

@@ -33,10 +33,6 @@ done <&0
 	HEAD['METHOD']="${BASH_REMATCH[1]}"
 	HEAD['PATH']="${BASH_REMATCH[2]}"
 	HEAD['VERSION']="${BASH_REMATCH[3]}"
-	# {
-	#   flock -x 3
-	#   printf "METHOD: ${HEAD['METHOD']} | PATH: ${HEAD['PATH']} | VERSION: ${HEAD['VERSION']}\n" >&3
-	# } 3>>"${LOG}"
 }
 
 # enviando respósta de exemplo temporária para testes iniciais:
@@ -52,7 +48,10 @@ valid=0
 		valid=1
 		# adicionar meios de envio e registros das transações:
 
-		# melhor e mais confiável meio de registro:
+		# variaveis ambientes para chamar os endpoints:
+		# PAYMENT_PROCESSOR_URL_DEFAULT e PAYMENT_PROCESSOR_URL_FALLBACK
+
+		# melhor e mais confiável meio de registro local com lock:
 		# {
 		#   flock -x 3
 			# variavel local temporário, será decidido destino posteriormente:
@@ -68,13 +67,13 @@ valid=0
 		# } 3>>"${destino}.txt"
 
 # respósta para testar montagem interna dos containers:
-		dados="{
-    \"message\" : \"oláaaaaa UwU\"
-}"
-
-		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
+# 		dados="{
+#     \"message\" : \"variavel ambiente: ${PAYMENT_PROCESSOR_URL_DEFAULT}\"
+# }
+# "
+# 		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		# emitir respósta padrão em caso se sucesso:
-		# echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
+		echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
 		exit 1
 	}
 }
@@ -85,17 +84,18 @@ valid=0
 		valid=1
 		# adicionar meios de pesquisa:
 
-		# emitir respósta em caso se sucesso:
+		# template para preencher com respósta do DB:
 		dados="{
-    "default" : {
-        "totalRequests": ${default_requests},
-        "totalAmount": ${default_amount}
+    \"default\" : {
+        \"totalRequests\": ${default_requests},
+        \"totalAmount\": ${default_amount}
     },
-    "fallback" : {
-        "totalRequests": ${fallback_requests},
-        "totalAmount": ${default_amount}
+    \"fallback\" : {
+        \"totalRequests\": ${fallback_requests},
+        \"totalAmount\": ${default_amount}
     }
-}"
+}
+"
 
 		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		exit 1
@@ -105,11 +105,9 @@ valid=0
 [[ ${valid} -eq 0 ]] && STATUS="404 - Not Found"
 
 echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
-
 exit 1
 
 # exemplo para usar como base:
-
 # iniciar operação conforme API com timeout de 100ms:
 # timeout
 # se encerrou com timeout, marcar flag global para desviar para payment fallback;
@@ -125,7 +123,6 @@ exit 1
 # }
 
 # HTTP 2XX
-# Qualquer coisa
 
 # GET /payments-summary?from=2020-07-10T12:34:56.000Z&to=2020-07-10T12:35:56.000Z
 
