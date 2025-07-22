@@ -1,0 +1,6 @@
+entry_point: 9999
+servers:
+  - name: backend1
+    url: http://backend1:8080
+  - name: backend2
+    url: http://backend1:8081
