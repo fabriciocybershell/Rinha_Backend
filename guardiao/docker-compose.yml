@@ -7,14 +7,13 @@ services:
       context: .
       # nome diferente, pois terá mais de um dockerfile para configuração dos containers.
       dockerfile: Dockerfile_balancer
-    command: /usr/sbin/xinetd -dontfork
     depends_on:
       - backend1
       - backend2
     ports:
       - "9999:3000"
     volumes:
-      - ./config.yml:/config/balancer.yml # arquivo de config da documentação.
+      - ./config/config.yml:/app/balancer.yml # arquivo de config da documentação.
     networks:
       - backend
       - payment-processor
