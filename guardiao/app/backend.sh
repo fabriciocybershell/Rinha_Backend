@@ -6,13 +6,13 @@
 declare -A HEAD
 
 # local do log:
-LOG="./guardiao/backend.log"
+LOG="./home/fabriciocybershell/sessão_desenvolvimento/rinha_backend/guardiao/backend.log"
 
 # variáveis padrão:
 STATUS="200 - Ok"
 
 # definindo host atual:
-declare -A HEAD
+declare -A HEAD API
 
 # definindo local para registrar o corpo:
 BODY_REQUEST=();
@@ -23,8 +23,8 @@ while IFS= read -t 0.001 -r buffer || [[ -n ${buffer} ]];do
 done <&0
 
 # meios de debug:
-# echo "////////////////////////////////////////////
-# ${BODY_REQUEST[@]}" >>"${LOG}"
+echo "////////////////////////////////////////////
+${BODY_REQUEST[@]}" >> "${LOG}"
 
 # requisição completa de solicitação de um arquivo:
 # GET /css/styles.css HTTP/1.1 # exemplo de teste de requisição.
@@ -35,6 +35,14 @@ done <&0
 	HEAD['VERSION']="${BASH_REMATCH[3]}"
 }
 
+#  {     "correlationId": "4a7901b8-7d26-4d9d-aa19-4dc1c7cf60b3",     "amount": 19.90 }
+
+# obter dados json da API:
+# [[ "${BODY_REQUEST[*]}" =~ (\"|\')(correlationId|amount)(\"|\')\:\ ?\"?([^(\"|\}|\ |\,)]*)\,? ]] && API["${BASH_REMATCH[2]}"]="${BASH_REMATCH[4]}"
+[[ "${BODY_REQUEST[*]}" =~ correlationId(\"|\')\:(\ ){0,}\"([^\"]*) ]] && API["correlationId"]="${BASH_REMATCH[3]}"
+[[ "${BODY_REQUEST[*]}" =~ amount(\"|\')\:(\ ){0,}([0-9\.\,]+) ]] && API["amount"]="${BASH_REMATCH[3]}"
+echo "Dados obtidos da API: [correlationId]:= ${API['correlationId']}
+[amount]:= ${API['amount']}" >> "${LOG}"
 # enviando respósta de exemplo temporária para testes iniciais:
 
 # variável controle:
@@ -51,6 +59,15 @@ valid=0
 		# variaveis ambientes para chamar os endpoints:
 		# PAYMENT_PROCESSOR_URL_DEFAULT e PAYMENT_PROCESSOR_URL_FALLBACK
 
+		# estratégia deste ponto:
+		# obter requisições, verificar se flag externa de endpoint FALLBACK existe:
+		# [[ -a ./FALLBACK.flag ]] && {
+		# 	# jogar para fallback:
+		# 	curl -X POST "${PAYMENT_PROCESSOR_URL_FALLBACK}"
+		# }||{
+		# 	# jogar para default:
+		# }
+
 		# melhor e mais confiável meio de registro local com lock:
 		# {
 		#   flock -x 3
@@ -66,12 +83,6 @@ valid=0
 		#   printf "${requests}:${amount}" >&3
 		# } 3>>"${destino}.txt"
 
-# respósta para testar montagem interna dos containers:
-# 		dados="{
-#     \"message\" : \"variavel ambiente: ${PAYMENT_PROCESSOR_URL_DEFAULT}\"
-# }
-# "
-# 		echo -ne "HTTP/1.1 ${STATUS}\r\nContent-Type: application/json\r\nContent-Length: ${#dados}\r\n\r\n${dados}\r\n\r\n"
 		# emitir respósta padrão em caso se sucesso:
 		echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
 		exit 1
@@ -106,44 +117,3 @@ valid=0
 
 echo -ne "HTTP/1.1 ${STATUS}\r\n\r\n"
 exit 1
-
-# exemplo para usar como base:
-# iniciar operação conforme API com timeout de 100ms:
-# timeout
-# se encerrou com timeout, marcar flag global para desviar para payment fallback;
-# verificar se arquivo específico de payment existe, se existir, ler e verificar tempo, senão, perguntar também.
-# consultar dados de fallback e sua disponibilidade, dependendo de qual for, gravar dado mais específico para quando tempo acabar:
-# registrar se deu certo:
-
-# APIS e dados de recebimento e retorno:
-# POST /payments
-# {
-#     "correlationId": "4a7901b8-7d26-4d9d-aa19-4dc1c7cf60b3",
-#     "amount": 19.90
-# }
-
-# HTTP 2XX
-
-# GET /payments-summary?from=2020-07-10T12:34:56.000Z&to=2020-07-10T12:35:56.000Z
-
-# HTTP 200 - Ok
-# {
-#     "default" : {
-#         "totalRequests": 43236,
-#         "totalAmount": 415542345.98
-#     },
-#     "fallback" : {
-#         "totalRequests": 423545,
-#         "totalAmount": 329347.34
-#     }
-# }
-# requisição
-
-# from é um campo opcional de timestamp no formato ISO em UTC (geralmente 3 horas a frente do horário do Brasil).
-# to é um campo opcional de timestamp no formato ISO em UTC.
-# resposta
-
-# default.totalRequests é um campo obrigatório do tipo inteiro.
-# default.totalAmount é um campo obrigatório do tipo decimal.
-# fallback.totalRequests é um campo obrigatório do tipo inteiro.
-# fallback.totalAmount é um campo obrigatório do tipo decimal.

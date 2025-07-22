@@ -3,4 +3,4 @@ servers:
   - name: backend1
     url: http://backend1:8080
   - name: backend2
-    url: http://backend1:8081
+    url: http://backend2:8081

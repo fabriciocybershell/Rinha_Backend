@@ -3,17 +3,17 @@ services:
   load-balancer:
     container_name: balanceador
     image: subrotokumar/lbx # container pronto focado em balancear somente.
-    build: 
-      context: .
+    # build: 
+      # context: .
       # nome diferente, pois terá mais de um dockerfile para configuração dos containers.
-      dockerfile: Dockerfile_balancer
+      # dockerfile: Dockerfile_balancer
     depends_on:
       - backend1
       - backend2
     ports:
       - "9999:3000"
     volumes:
-      - ./config/config.yml:/app/balancer.yml # arquivo de config da documentação.
+      - ./config/balancer.yml:/app/config.yml # arquivo de config da documentação.
     networks:
       - backend
       - payment-processor
